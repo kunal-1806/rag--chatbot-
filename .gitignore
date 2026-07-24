@@ -9,3 +9,7 @@ wheels/
 .env
 # Virtual environments
 .venv
+.superpowers
+.claude
+.agents
+docs
