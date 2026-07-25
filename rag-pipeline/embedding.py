@@ -5,11 +5,11 @@ from sentence_transformers import SentenceTransformer
 import tiktoken
 
 class EmbeddingGenerator:
-    def __init__(self, model_name: str = "all-MiniLM-L6-v2",chunk_size: int = 500, overlap: int = 50):
+    def __init__(self, model_name: str = "all-MiniLM-L6-v2",chunk_size: int = 500, chunk_overlap: int = 50):
         self.model = SentenceTransformer(model_name)
         self.tokenizer = tiktoken.get_encoding("cl100k_base")
         self.chunk_size = chunk_size
-        self.overlap = overlap
+        self.chunk_overlap = chunk_overlap
 
     def chunk_doc(self,documents: List[Any]) -> List[str]:
             """
@@ -24,11 +24,11 @@ class EmbeddingGenerator:
             text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
                 encoding_name="cl100k_base",
                 chunk_size=self.chunk_size,
-                chunk_overlap=self.overlap,
+                chunk_overlap=self.chunk_overlap,
                 # length_function=len,
                 separators=["\n\n", "\n", " ", ""]
             )
-            print(f"[Debug] Chunking documents with chunk size {self.chunk_size} and overlap {self.overlap}.")
+            print(f"[Debug] Chunking documents with chunk size {self.chunk_size} and overlap {self.chunk_overlap}.")
             chunks = text_splitter.split_documents(documents)
             return chunks
     def generate_embeddings(self, chunks: List[str]) -> np.ndarray: 
