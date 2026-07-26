@@ -1,22 +1,21 @@
-from langchain_community.document_loaders import PyPDFLoader,TextLoader,CSVLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.document_loaders import PyPDFLoader, TextLoader, CSVLoader
 from langchain_community.document_loaders.excel import UnstructuredExcelLoader
-import hashlib
-import os 
-from typing import List, Dict, Any
+import os
+from typing import List, Any
 from pathlib import Path
-def all_pdf(pdf_path:str)-> list[Any]:
+
+def all_pdf(pdf_path: str) -> List[Any]:
     docs = []
     data_path = Path(pdf_path)
-    pdf_files = data_path.glob("/**/*.pdf")
-    txt_files = data_path.glob("/**/*.txt")
-    csv_files = data_path.glob("/**/*.csv")
+    pdf_files = data_path.glob("**/*.pdf")
+    txt_files = data_path.glob("**/*.txt")
+    csv_files = data_path.glob("**/*.csv")
     for pdf in pdf_files:
         print(f"Loading {pdf}")
         try:
             loader = PyPDFLoader(str(pdf))
             loaded = loader.load()
-            print(f"[Debug] Loaded {len(loaded)} pages from {pdf}.")
+            print(f"[Debug] Loaded {len(loaded)} documents from {pdf}.")
             docs.extend(loaded)
         except Exception as e:
             print(f"[Error] Failed to load {pdf}: {e}")
@@ -25,7 +24,7 @@ def all_pdf(pdf_path:str)-> list[Any]:
         try:
             loader = TextLoader(str(txt))
             loaded = loader.load()
-            print(f"[Debug] Loaded {len(loaded)} pages from {txt}.")
+            print(f"[Debug] Loaded {len(loaded)} documents from {txt}.")
             docs.extend(loaded)
         except Exception as e:
             print(f"[Error] Failed to load {txt}: {e}")
@@ -34,7 +33,7 @@ def all_pdf(pdf_path:str)-> list[Any]:
         try:
             loader = CSVLoader(str(csv))
             loaded = loader.load()
-            print(f"[Debug] Loaded {len(loaded)} pages from {csv}.")
+            print(f"[Debug] Loaded {len(loaded)} documents from {csv}.")
             docs.extend(loaded)
         except Exception as e:
             print(f"[Error] Failed to load {csv}: {e}")
@@ -45,10 +44,8 @@ def all_pdf(pdf_path:str)-> list[Any]:
         try:
             loader = UnstructuredExcelLoader(str(excel_file))
             loaded = loader.load()
-            print(f"[Debug] Loaded {len(loaded)} pages from {excel_file}.")
+            print(f"[Debug] Loaded {len(loaded)} documents from {excel_file}.")
             docs.extend(loaded)
         except Exception as e:
             print(f"[Error] Failed to load {excel_file}: {e}")
     return docs
-
-
