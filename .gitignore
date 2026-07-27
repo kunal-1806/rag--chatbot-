@@ -13,4 +13,5 @@ wheels/
 .claude
 .agents
 docs
+faiss_store/
 
