@@ -67,4 +67,3 @@ class faissVectordB:
         print(f"[INFO] Querying vector store for: '{query_text}'")
         query_emb = self.embedding_model.encode([query_text]).astype('float32')
         return self.search(query_emb, top_k=top_k)
-    
