@@ -2,7 +2,7 @@ import os
 import faiss
 import numpy as np
 import pickle
-from typing import List
+from typing import List, Any
 from sentence_transformers import SentenceTransformer
 from src.embedding import EmbeddingGenerator
 
@@ -19,18 +19,17 @@ class faissVectordB:
         self.chunk_overlap = chunk_overlap
         print(f"Initialized faissVectordB with embedding model: {embedding_model_name}, index file path: {index_file_path}, chunk size: {chunk_size}, and chunk overlap: {chunk_overlap}")
 
-    def build_from_docs(self, ids: List[str], metadata: List[dict]):
-        print(f"Building FAISS index from {len(ids)} documents.")
+    def build_from_docs(self, documents: List[Any]):
+        print(f"Building FAISS index from {len(documents)} documents.")
         emd_pipeline = EmbeddingGenerator(chunk_size=self.chunk_size, chunk_overlap=self.chunk_overlap)
-        documents = [doc for doc in metadata]
         chunks = emd_pipeline.chunk_doc(documents)
         embeddings = emd_pipeline.generate_embeddings(chunks)
         self.index = faiss.IndexFlatL2(embeddings.shape[1])
         self.index.add(embeddings)
-        self.id_to_text = {i: text for i, text in enumerate(ids)}
+        self.id_to_text = {i: str(i) for i in range(len(chunks))}
         self.metadata = [{"text": chunk.page_content} for chunk in chunks]
 
-    def add_embeddings(self, embeddings: np.ndarray, metadata: List[dict]) -> List[dict]:
+    def add_embeddings(self, embeddings: np.ndarray, metadata: List[dict]) -> None:
         dim = embeddings.shape[1]
         if self.index is None:
             self.index = faiss.IndexFlatL2(dim)

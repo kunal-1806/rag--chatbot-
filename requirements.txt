@@ -11,9 +11,11 @@ langchain-community>=0.4.0
 langchain-ollama>=0.4.0          # local LLM + embeddings via Ollama
 langchain-nvidia-ai-endpoints>=0.4.0   # NVIDIA NIM integration
 langchain-openai>=0.4.0          # used for OpenRouter (OpenAI-compatible endpoint)
+langchain-openrouter>=0.0.3      # OpenRouter LLM integration
 
 # --- Vector DB ---
 chromadb>=1.5.9
+faiss-cpu>=1.10.0
 
 # --- Embeddings (local, if not using Ollama's own) ---
 sentence-transformers>=3.4.0
